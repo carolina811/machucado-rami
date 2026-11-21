@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Machucado Rami — Licorería & Machucados Artesanales</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-stone-50 text-slate-800 min-h-screen flex flex-col">
+
+  <!-- Barra superior -->
+  <header class="sticky top-0 z-30 bg-white/95 backdrop-blur border-b border-emerald-900/15">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between gap-3">
+      <a href="#" class="flex items-center gap-3 shrink-0">
+        <div class="w-14 h-14 rounded-md overflow-hidden bg-white border-2 border-emerald-900 shrink-0">
+          <img src="imagen/since%202026.svg" alt="Logo" class="w-full h-full object-cover" onerror="this.style.display='none'" />
+        </div>
+        <div>
+          <span class="font-extrabold text-base sm:text-lg text-emerald-950 block leading-none">Machucado Rami</span>
+          <span class="text-[11px] text-amber-700 font-semibold">Machucados frescos & licorería</span>
+        </div>
+      </a>
+      <nav class="flex items-center gap-2">
+        <!-- FIX: el id debe ser "whatsappNavLink" (antes tenía la URL como id y el script se rompía) -->
+        <a id="whatsappNavLink" href="#" target="_blank" rel="noopener noreferrer"
+           class="px-3 py-2 rounded-lg text-xs sm:text-sm font-bold bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 transition">
+          WhatsApp
+        </a>
+        <button id="openTrackerBtn" class="px-3 py-2 rounded-lg text-xs sm:text-sm font-semibold bg-white hover:bg-emerald-50 border border-slate-300 flex items-center gap-1.5 cursor-pointer">
+          <span>Seguimiento</span><span id="trackerDot" class="w-2 h-2 rounded-full bg-slate-400"></span>
+        </button>
+        <button id="openAdminBtn" class="px-3 py-2 rounded-lg text-xs sm:text-sm font-semibold bg-emerald-950 hover:bg-emerald-900 text-white cursor-pointer">Admin</button>
+        <button id="openCartBtn" class="px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold bg-amber-500 hover:bg-amber-400 text-emerald-950 flex items-center gap-2 cursor-pointer">
+          <span>Carrito</span><span id="cartCountBadge" class="bg-emerald-950 text-amber-300 text-xs font-extrabold px-2 py-0.5 rounded-full">0</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Carrusel -->
+  <section class="border-b border-emerald-900/10 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-6">
+      <div id="promoCarousel" class="relative rounded-2xl overflow-hidden border border-emerald-900/20 bg-emerald-950 shadow-xl">
+        <div id="promoSlidesTrack" class="flex transition-transform duration-500 ease-out"></div>
+        <button id="prevPromoBtn" aria-label="Anterior" class="hidden sm:flex absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 text-emerald-950 font-bold items-center justify-center cursor-pointer">‹</button>
+        <button id="nextPromoBtn" aria-label="Siguiente" class="hidden sm:flex absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 text-emerald-950 font-bold items-center justify-center cursor-pointer">›</button>
+        <div id="promoDots" class="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-2"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Hero -->
+  <section class="border-b border-emerald-900/15 bg-gradient-to-br from-emerald-950 via-emerald-900 to-teal-950 text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-10 grid lg:grid-cols-12 gap-8 items-center">
+      <div class="lg:col-span-8 space-y-4">
+        <span class="inline-block text-xs uppercase tracking-widest font-bold px-3 py-1 rounded-full bg-amber-400/15 text-amber-300 border border-amber-400/35">Especialidad de la casa</span>
+        <h1 class="text-3xl sm:text-5xl font-black leading-tight">Machucados artesanales con <span class="text-amber-400">material de excelente calidad</span> y precio.</h1>
+        <p class="text-emerald-100/85 text-base sm:text-lg max-w-2xl">Preparamos machucados al estilo tradicional. Compra con descuento automático de stock y sigue tu pedido en tiempo real.</p>
+        <div class="flex flex-wrap gap-3">
+          <a href="#catalogo" class="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-emerald-950 font-extrabold text-sm">Ver catálogo</a>
+          <button id="heroTrackerBtn" class="px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-amber-200 font-semibold text-sm border border-white/20 cursor-pointer">Ver estado de pedido</button>
+        </div>
+      </div>
+      <div class="lg:col-span-4">
+        <div class="rounded-2xl p-5 bg-white text-slate-800 shadow-xl space-y-3">
+          <p class="text-xs font-extrabold uppercase tracking-wider text-emerald-900">Entrega y seguimiento</p>
+          <p class="text-sm text-slate-600">Etapas: <strong class="text-emerald-950">Pedido recibido</strong>, <strong class="text-amber-700">En camino</strong> y <strong class="text-emerald-700">Pedido entregado</strong>.</p>
+          <div id="miniOrderPreview" class="p-3 rounded-xl bg-stone-50 border border-slate-200 text-xs text-slate-500">Aún no realizaste un pedido.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Catálogo -->
+  <main id="catalogo" class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-10">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+      <div>
+        <h2 class="text-2xl font-extrabold text-emerald-950">Catálogo de Productos</h2>
+        <p class="text-sm text-slate-600">Filtra por categoría o busca tu machucado favorito.</p>
+      </div>
+      <input id="searchInput" type="text" placeholder="Buscar machucado, singani, combo..." class="w-full md:w-72 px-4 py-2.5 rounded-xl bg-white border border-slate-300 text-sm focus:outline-none focus:border-emerald-800" />
+    </div>
+    <div id="categoryFilters" class="flex flex-wrap gap-2 mb-8"></div>
+    <div id="loadingState" class="text-center py-14 text-slate-500 hidden">Cargando catálogo...</div>
+    <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
+    <div id="emptyState" class="hidden text-center py-14 bg-white rounded-2xl border border-slate-200">
+      <p class="text-slate-700 font-semibold">No se encontraron productos con ese filtro.</p>
+      <button id="resetFiltersBtn" class="mt-3 px-4 py-2 rounded-lg bg-emerald-900 hover:bg-emerald-800 text-sm text-white font-semibold cursor-pointer">Restablecer filtros</button>
+    </div>
+  </main>
+
+  <footer class="border-t border-emerald-900/15 bg-emerald-950 py-6 px-4 text-center text-xs text-emerald-200/80 space-y-1">
+    <p>Machucado Rami · Licorería con control de stock, promociones y seguimiento en tiempo real</p>
+    <p class="text-amber-300 font-semibold">Venta de bebidas alcohólicas prohibida a menores de 18 años. Consume con moderación.</p>
+  </footer>
+
+  <!-- Carrito -->
+  <div id="cartBackdrop" class="fixed inset-0 bg-emerald-950/60 z-40 hidden"></div>
+  <aside id="cartDrawer" class="fixed top-0 right-0 h-full w-full max-w-md bg-white z-50 translate-x-full transition-transform duration-300 flex flex-col shadow-2xl">
+    <div class="p-5 bg-emerald-950 text-white flex items-center justify-between">
+      <div>
+        <h3 class="font-extrabold text-lg">Tu Carrito</h3>
+        <p class="text-xs text-emerald-200/80">Al confirmar se descuenta el stock y se inicia el seguimiento.</p>
+      </div>
+      <button id="closeCartBtn" class="w-9 h-9 rounded-lg bg-white/10 hover:bg-white/20 font-bold cursor-pointer">✕</button>
+    </div>
+    <div id="cartItemsContainer" class="flex-1 overflow-y-auto p-5 space-y-3 bg-stone-50"></div>
+    <div class="p-5 border-t border-slate-200 bg-white space-y-3">
+      <input id="custName" type="text" placeholder="Tu nombre" class="w-full px-3 py-2 rounded-xl bg-stone-50 border border-slate-300 text-sm" />
+      <input id="custPhone" type="tel" placeholder="Tu celular (ej. 70000000)" class="w-full px-3 py-2 rounded-xl bg-stone-50 border border-slate-300 text-sm" />
+      <input id="custAddress" type="text" placeholder="Dirección de entrega (calle, zona, referencia)" class="w-full px-3 py-2 rounded-xl bg-stone-50 border border-slate-300 text-sm" />
+      <label class="flex items-start gap-2 text-xs text-slate-600">
+        <input id="ageCheck" type="checkbox" class="mt-0.5" /> Declaro que soy mayor de 18 años.
+      </label>
+      <div class="flex items-center justify-between">
+        <span class="text-slate-600 font-medium">Total a pagar</span>
+        <span id="cartTotalText" class="text-xl font-black text-emerald-950">Bs. 0.00</span>
+      </div>
+      <button id="checkoutBtn" disabled class="w-full py-3 rounded-xl font-extrabold text-sm bg-amber-500 hover:bg-amber-400 disabled:bg-slate-200 disabled:text-slate-400 text-emerald-950 cursor-pointer disabled:cursor-not-allowed">Confirmar compra y descontar stock</button>
+    </div>
+  </aside>
+
+  <!-- Seguimiento -->
+  <div id="trackerModal" class="fixed inset-0 bg-emerald-950/65 z-50 hidden items-center justify-center p-4">
+    <div class="bg-white rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl max-h-[90vh] overflow-y-auto">
+      <div class="px-6 py-4 flex items-center justify-between bg-emerald-950 text-white">
+        <div>
+          <h3 class="font-extrabold text-lg">Seguimiento de Pedido</h3>
+          <p id="trackerOrderCode" class="text-xs text-amber-300 font-semibold">Sin pedido activo</p>
+        </div>
+        <button id="closeTrackerBtn" class="w-9 h-9 rounded-lg bg-white/10 hover:bg-white/20 font-bold cursor-pointer">✕</button>
+      </div>
+      <div id="trackerContent" class="p-6 space-y-6"></div>
+    </div>
+  </div>
+
+  <!-- Admin -->
+  <div id="adminModal" class="fixed inset-0 bg-emerald-950/65 z-50 hidden items-center justify-center p-4">
+    <div class="bg-white rounded-2xl w-full max-w-5xl max-h-[90vh] flex flex-col overflow-hidden shadow-2xl">
+      <div class="px-6 py-4 flex items-center justify-between bg-emerald-950 text-white">
+        <div class="flex items-center gap-3">
+          <h3 class="font-extrabold text-lg">Panel de Administración</h3>
+          <span id="adminSessionTag" class="hidden text-xs px-2.5 py-0.5 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/40 font-semibold">Sesión activa</span>
+        </div>
+        <button id="closeAdminBtn" class="w-9 h-9 rounded-lg bg-white/10 hover:bg-white/20 font-bold cursor-pointer">✕</button>
+      </div>
+
+      <div id="adminLoginView" class="p-6 sm:p-10 max-w-md w-full mx-auto space-y-5">
+        <h4 class="text-xl font-extrabold text-emerald-950 text-center">Acceso restringido</h4>
+        <form id="adminLoginForm" class="space-y-4">
+          <input id="adminUserInput" type="text" required placeholder="Usuario" class="w-full px-3.5 py-2.5 rounded-xl bg-stone-50 border border-slate-300 text-sm" />
+          <input id="adminPassInput" type="password" required placeholder="Contraseña" class="w-full px-3.5 py-2.5 rounded-xl bg-stone-50 border border-slate-300 text-sm" />
+          <p id="loginErrorMsg" class="text-xs text-rose-600 font-semibold hidden">Usuario o contraseña incorrectos.</p>
+          <button type="submit" class="w-full py-2.5 rounded-xl bg-emerald-900 hover:bg-emerald-800 text-white font-bold text-sm cursor-pointer">Iniciar sesión</button>
+        </form>
+      </div>
+
+      <div id="adminDashboardView" class="hidden flex-1 overflow-y-auto p-6 space-y-8 bg-stone-50">
+        <div class="flex items-center justify-between bg-white px-4 py-3 rounded-2xl border border-slate-200">
+          <p class="text-xs sm:text-sm font-semibold text-slate-600">Administra productos, stock, categorías y pedidos</p>
+          <button id="logoutAdminBtn" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 cursor-pointer">Cerrar sesión</button>
+        </div>
+
+        <section class="grid lg:grid-cols-12 gap-6">
+          <form id="productForm" class="lg:col-span-5 p-4 rounded-2xl bg-white border border-slate-200 space-y-3 h-fit">
+            <div class="flex items-center justify-between">
+              <h4 id="productFormTitle" class="font-bold text-emerald-950">Nuevo Producto</h4>
+              <button type="button" id="cancelEditProductBtn" class="hidden text-xs text-slate-500 underline cursor-pointer">Cancelar edición</button>
+            </div>
+            <input type="hidden" id="editProductId" />
+            <input id="prodNombre" type="text" required placeholder="Nombre" class="w-full px-3 py-2 rounded-xl bg-stone-50 border border-slate-300 text-sm" />
+            <div class="grid grid-cols-2 gap-3">
+              <select id="prodCategoria" required class="px-3 py-2 rounded-xl bg-stone-50 border border-slate-300 text-sm"></select>
+              <input id="prodPrecio" type="number" step="0.5" min="0" required placeholder="Precio Bs." class="px-3 py-2 rounded-xl bg-stone-50 border border-slate-300 text-sm" />
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <input id="prodStock" type="number" min="0" required placeholder="Stock" class="px-3 py-2 rounded-xl bg-stone-50 border border-slate-300 text-sm" />
+              <input id="prodImagen" type="text" placeholder="Imagen (ruta o https://...)" class="px-3 py-2 rounded-xl bg-stone-50 border border-slate-300 text-sm" />
+            </div>
+            <textarea id="prodDescripcion" rows="2" placeholder="Descripción" class="w-full px-3 py-2 rounded-xl bg-stone-50 border border-slate-300 text-sm"></textarea>
+            <button type="submit" id="saveProductBtn" class="w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-emerald-950 font-extrabold text-sm cursor-pointer">Guardar producto</button>
+          </form>
+
+          <div class="lg:col-span-7 p-4 rounded-2xl bg-white border border-slate-200 space-y-3">
+            <h4 class="font-bold text-emerald-950">Inventario actual</h4>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-sm">
+                <thead class="text-xs uppercase bg-emerald-50 border-b border-emerald-200"><tr>
+                  <th class="py-2 px-3">Producto</th><th class="py-2 px-3">Categoría</th><th class="py-2 px-3">Precio</th><th class="py-2 px-3">Stock</th><th class="py-2 px-3 text-right">Acciones</th>
+                </tr></thead>
+                <tbody id="adminProductsTableBody" class="divide-y divide-slate-200"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section class="p-4 rounded-2xl bg-white border border-slate-200 space-y-4">
+          <h4 class="font-bold text-emerald-950">Categorías</h4>
+          <form id="categoryForm" class="flex flex-col sm:flex-row gap-2.5">
+            <input id="catNombreInput" type="text" required placeholder="Nombre de categoría" class="sm:w-64 px-3.5 py-2 rounded-xl bg-stone-50 border border-slate-300 text-sm" />
+            <input id="catDescInput" type="text" placeholder="Descripción (opcional)" class="flex-1 px-3.5 py-2 rounded-xl bg-stone-50 border border-slate-300 text-sm" />
+            <button type="submit" class="px-4 py-2 rounded-xl bg-emerald-900 hover:bg-emerald-800 text-white font-bold text-sm cursor-pointer">+ Categoría</button>
+          </form>
+          <div id="adminCategoriesList" class="flex flex-wrap gap-2.5"></div>
+        </section>
+
+        <section class="p-4 rounded-2xl bg-white border border-slate-200 space-y-3">
+          <div class="flex items-center justify-between">
+            <h4 class="font-bold text-emerald-950">Pedidos</h4>
+            <button id="refreshOrdersBtn" class="text-xs px-3 py-1.5 rounded-lg bg-emerald-50 border border-emerald-200 font-bold cursor-pointer">Actualizar</button>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm">
+              <thead class="text-xs uppercase bg-emerald-50 border-b border-emerald-200"><tr>
+                <th class="py-2 px-3">Código</th><th class="py-2 px-3">Cliente</th><th class="py-2 px-3">Detalle</th><th class="py-2 px-3">Total</th><th class="py-2 px-3">Estado</th><th class="py-2 px-3 text-right">Acción</th>
+              </tr></thead>
+              <tbody id="adminOrdersBody" class="divide-y divide-slate-200"></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="fixed bottom-5 right-5 z-[60] hidden px-4 py-3 rounded-xl text-sm font-semibold text-white shadow-xl"></div>
+
+  <script>
+    // ==========================================
+    // 1. CONFIGURACIÓN
+    // ==========================================
+    // Puedes pegar el link del panel de MockAPI (mockapi.io/projects/ID) o la URL de la API
+    // (https://ID.mockapi.io/api/v1). El código lo convierte solo.
+    // Recursos que debes crear en MockAPI: productos, categorias, pedidos
+    const MOCKAPI_LINK = 'https://mockapi.io/projects/6aff2b9e7fc363ccff08efa7';
+
+    const ADMIN_CREDENTIALS = { username: 'admin', password: '1234' }; // cámbialos
+
+    // Bolivia = 591 + número de 8 dígitos (sin + ni espacios)
+    const WHATSAPP_NUMBER = '59164873035';
+
+    const PROMO_SLIDES = [
+      { badge: 'Promo Fin de Semana', title: '2x1 en Machucados de Chile y Menta', subtitle: 'Preparados al momento. Válido hasta agotar stock.', tagText: '¡Aprovecha hoy!', image: 'imagen/hojaCP.webp', targetCategory: 'Machucados Especiales' },
+      { badge: 'Combo fin de semana', title: 'Singani de Altura + Coca-Cola', subtitle: 'Ideal para reuniones con amigos y armar tus propios machucados.', tagText: 'Stock limitado', image: 'imagen/cocacola (1).webp', targetCategory: 'Singanis y Licores' },
+      { badge: 'Multi Sabor', title: 'Machucado Yogubull + Red Bull', subtitle: 'El equilibrio perfecto entre dulce y energía.', tagText: 'Favorito de la casa', image: 'imagen/images.jpeg', targetCategory: 'Machucados Especiales' }
+    ];
+
+    const ORDER_STAGES = [
+      { key: 'recibido', label: 'Pedido recibido', desc: 'Tu orden fue registrada y estamos preparando tus productos.' },
+      { key: 'en_camino', label: 'En camino', desc: 'El repartidor ya salió con tu pedido hacia tu dirección.' },
+      { key: 'entregado', label: 'Pedido entregado', desc: '¡Pedido entregado! Disfruta con moderación.' }
+    ];
+
+    const KEYS = { PRODUCTS: 'mr_products', CATEGORIES: 'mr_categories', ADMIN: 'mr_admin', ORDER: 'mr_order' };
+
+    const DEFAULT_CATEGORIES = [
+      { nombre: 'Machucados Especiales', descripcion: 'Machucados artesanales de primera' },
+      { nombre: 'Singanis y Licores', descripcion: 'Bebidas alcohólicas y mezcladores' },
+      { nombre: 'Combos y Promociones', descripcion: 'Opciones ideales para compartir' }
+    ];
+
+    const DEFAULT_PRODUCTS = [
+      { nombre: 'Machucado de Menta', categoria: 'Machucados Especiales', precio: 45, stock: 18, imagen: 'imagen/menta.jpeg', descripcion: 'Machucado fresco con hoja de menta y toque cítrico.' },
+      { nombre: 'Machucado de Maracuyá', categoria: 'Machucados Especiales', precio: 50, stock: 12, imagen: 'imagen/45.jpeg', descripcion: 'Pulpa ácida de maracuyá con hielo triturado.' },
+      { nombre: 'Machucado de Oreo', categoria: 'Machucados Especiales', precio: 42, stock: 6, imagen: 'imagen/oreo.jpeg', descripcion: 'Cremoso machucado con galleta Oreo.' },
+      { nombre: 'Singani de Altura Selección', categoria: 'Singanis y Licores', precio: 85, stock: 10, imagen: 'imagen/singani.webp', descripcion: 'Destilado aromático ideal como base para tragos y machucados.' }
+    ];
+
+    const FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=800&q=80';
+
+    // ==========================================
+    // 2. ESTADO Y UTILIDADES
+    // ==========================================
+    const $ = id => document.getElementById(id);
+    const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    const src = s => esc(String(s || '').trim().replace(/ /g, '%20') || FALLBACK_IMAGE);
+    const imgFallback = `onerror="this.onerror=null;this.src='${FALLBACK_IMAGE}'"`;
+    const readJSON = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch { return d; } };
+    const bs = n => 'Bs. ' + (Number(n) || 0).toFixed(2);
+    const nowStr = () => new Date().toLocaleTimeString('es-BO', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+    function normalizeBaseUrl(url) {
+      url = (url || '').trim().replace(/\/+$/, '');
+      const m = url.match(/mockapi\.io\/projects\/([a-z0-9]+)/i); // convierte el link del panel a URL de API
+      return m ? `https://${m[1]}.mockapi.io/api/v1` : url;
+    }
+    const BASE = normalizeBaseUrl(MOCKAPI_LINK);
+
+    const state = {
+      online: false, products: [], categories: [], cart: [],
+      selectedCategory: 'Todos', searchQuery: '', promoIndex: 0,
+      isAdmin: sessionStorage.getItem(KEYS.ADMIN) === 'true',
+      activeOrder: readJSON(KEYS.ORDER, null)
+    };
+
+    function showToast(msg, type = 'info') {
+      const t = $('toast');
+      t.textContent = msg;
+      t.className = `fixed bottom-5 right-5 z-[60] px-4 py-3 rounded-xl text-sm font-semibold text-white shadow-xl ${type === 'error' ? 'bg-rose-700' : type === 'success' ? 'bg-emerald-800' : 'bg-emerald-950'}`;
+      clearTimeout(window.__t);
+      window.__t = setTimeout(() => t.classList.add('hidden'), 3200);
+    }
+
+    const waUrl = msg => `https://wa.me/${String(WHATSAPP_NUMBER).replace(/\D/g, '')}?text=${encodeURIComponent(msg)}`;
+
+    // ==========================================
+    // 3. CAPA DE DATOS (MockAPI con respaldo local)
+    // ==========================================
+    async function api(path, opts = {}) {
+      const res = await fetch(`${BASE}${path}`, { headers: { 'Content-Type': 'application/json' }, ...opts });
+      if (!res.ok) throw new Error(`MockAPI ${res.status} en ${path}`);
+      return res.json();
+    }
+    const saveLocal = () => {
+      localStorage.setItem(KEYS.PRODUCTS, JSON.stringify(state.products));
+      localStorage.setItem(KEYS.CATEGORIES, JSON.stringify(state.categories));
+    };
+    const withIds = (list, p) => list.map((x, i) => ({ id: `${p}-${i + 1}`, ...x }));
+
+    async function loadAllData() {
+      $('loadingState').classList.remove('hidden');
+      try {
+        if (!BASE) throw new Error('Sin URL de MockAPI');
+        let [prods, cats] = await Promise.all([api('/productos'), api('/categorias')]);
+        // Si MockAPI está vacío, se cargan los datos iniciales
+        if (!cats.length) for (const c of DEFAULT_CATEGORIES) await api('/categorias', { method: 'POST', body: JSON.stringify(c) });
+        if (!prods.length) for (const p of DEFAULT_PRODUCTS) await api('/productos', { method: 'POST', body: JSON.stringify(p) });
+        if (!cats.length || !prods.length) [prods, cats] = await Promise.all([api('/productos'), api('/categorias')]);
+        state.products = prods;
+        state.categories = cats;
+        state.online = true;
+        saveLocal();
+      } catch (err) {
+        console.warn(err);
+        state.online = false;
+        state.categories = readJSON(KEYS.CATEGORIES, null) || withIds(DEFAULT_CATEGORIES, 'cat');
+        state.products = readJSON(KEYS.PRODUCTS, null) || withIds(DEFAULT_PRODUCTS, 'prod');
+        saveLocal();
+        showToast('Sin conexión con MockAPI. Usando datos locales.', 'error');
+      } finally {
+        $('loadingState').classList.add('hidden');
+        renderAll();
+      }
+    }
+
+    async function createProduct(payload) {
+      if (state.online) {
+        const created = await api('/productos', { method: 'POST', body: JSON.stringify(payload) });
+        state.products.unshift(created);
+      } else state.products.unshift({ ...payload, id: 'prod-' + Date.now() });
+      saveLocal();
+    }
+    async function updateProduct(id, payload) {
+      let updated = { ...payload, id };
+      if (state.online) updated = await api(`/productos/${id}`, { method: 'PUT', body: JSON.stringify(payload) });
+      state.products = state.products.map(p => String(p.id) === String(id) ? updated : p);
+      saveLocal();
+    }
+    async function deleteProduct(id) {
+      if (state.online) await api(`/productos/${id}`, { method: 'DELETE' });
+      state.products = state.products.filter(p => String(p.id) !== String(id));
+      saveLocal();
+    }
+    async function createCategory(payload) {
+      const c = state.online ? await api('/categorias', { method: 'POST', body: JSON.stringify(payload) }) : { ...payload, id: 'cat-' + Date.now() };
+      state.categories.push(c);
+      saveLocal();
+    }
+    async function removeCategory(id) {
+      if (state.online) await api(`/categorias/${id}`, { method: 'DELETE' });
+      state.categories = state.categories.filter(c => String(c.id) !== String(id));
+      saveLocal();
+    }
+
+    // ==========================================
+    // 4. CARRUSEL
+    // ==========================================
+    function buildPromoCarousel() {
+      $('promoSlidesTrack').innerHTML = PROMO_SLIDES.map(s => `
+        <div class="min-w-full relative h-64 sm:h-80 bg-emerald-900">
+          <img src="${src(s.image)}" alt="${esc(s.title)}" class="w-full h-full object-cover" onerror="this.style.display='none'" />
+          <div class="absolute inset-0 bg-gradient-to-r from-emerald-950/95 via-emerald-950/75 to-transparent flex items-center">
+            <div class="p-6 sm:p-10 max-w-xl space-y-3">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="text-xs font-extrabold uppercase px-3 py-1 rounded-full bg-amber-500 text-emerald-950">${esc(s.badge)}</span>
+                <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-white/15 text-amber-200 border border-white/25">${esc(s.tagText)}</span>
+              </div>
+              <h2 class="text-2xl sm:text-4xl font-black text-white leading-tight">${esc(s.title)}</h2>
+              <p class="text-sm sm:text-base text-emerald-100/90">${esc(s.subtitle)}</p>
+              <div class="flex flex-wrap gap-2.5">
+                <a href="#catalogo" data-promo-cat="${esc(s.targetCategory || 'Todos')}" class="promo-cta px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-emerald-950 font-extrabold text-xs sm:text-sm">Ver promoción</a>
+                <a href="${esc(waUrl('Hola! Me interesa la promo: ' + s.title))}" target="_blank" rel="noopener noreferrer" class="px-4 py-2 rounded-xl bg-white text-emerald-950 font-bold text-xs sm:text-sm">Pedir por WhatsApp</a>
+              </div>
+            </div>
+          </div>
+        </div>`).join('');
+      $('promoDots').innerHTML = PROMO_SLIDES.map((_, i) => `<button data-i="${i}" aria-label="Promoción ${i + 1}" class="promo-dot h-2.5 rounded-full transition-all cursor-pointer"></button>`).join('');
+      $('promoSlidesTrack').addEventListener('click', e => {
+        const a = e.target.closest('.promo-cta');
+        if (a) { state.selectedCategory = a.dataset.promoCat; renderCategoryFilters(); renderProductsGrid(); }
+      });
+      $('promoDots').addEventListener('click', e => { const b = e.target.closest('.promo-dot'); if (b) goPromo(Number(b.dataset.i)); });
+      goPromo(0);
+    }
+    // Solo mueve el carrusel (ya no se vuelve a dibujar, así la animación funciona)
+    function goPromo(i) {
+      state.promoIndex = (i + PROMO_SLIDES.length) % PROMO_SLIDES.length;
+      $('promoSlidesTrack').style.transform = `translateX(-${state.promoIndex * 100}%)`;
+      document.querySelectorAll('.promo-dot').forEach((d, idx) => {
+        d.className = `promo-dot h-2.5 rounded-full transition-all cursor-pointer ${idx === state.promoIndex ? 'w-7 bg-amber-400' : 'w-2.5 bg-white/50 hover:bg-white'}`;
+      });
+    }
+
+    // ==========================================
+    // 5. CATÁLOGO
+    // ==========================================
+    function renderAll() {
+      renderCategoryFilters(); renderProductsGrid(); renderCart(); renderOrderTrackerUI();
+      renderAdminCategorySelect(); renderAdminProductsTable(); renderAdminCategoriesList();
+    }
+
+    function renderCategoryFilters() {
+      const names = ['Todos', ...state.categories.map(c => c.nombre)];
+      if (!names.includes(state.selectedCategory)) state.selectedCategory = 'Todos';
+      $('categoryFilters').innerHTML = names.map(n => `
+        <button data-category="${esc(n)}" class="cat-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition cursor-pointer ${state.selectedCategory === n ? 'bg-emerald-900 text-white' : 'bg-white text-emerald-950 hover:bg-emerald-50 border border-slate-200'}">${esc(n)}</button>`).join('');
+    }
+
+    function renderProductsGrid() {
+      const q = state.searchQuery.trim().toLowerCase();
+      const list = state.products.filter(p => {
+        const okCat = state.selectedCategory === 'Todos' || p.categoria === state.selectedCategory;
+        const okText = !q || [p.nombre, p.descripcion, p.categoria].some(v => String(v || '').toLowerCase().includes(q));
+        return okCat && okText;
+      });
+      $('emptyState').classList.toggle('hidden', list.length > 0);
+      $('productsGrid').innerHTML = list.map(p => {
+        const stock = Number(p.stock) || 0, out = stock <= 0;
+        return `
+        <article class="group rounded-2xl bg-white border border-slate-200 hover:border-emerald-800/50 overflow-hidden flex flex-col transition shadow-sm hover:shadow-md">
+          <div class="relative h-48 bg-slate-100 overflow-hidden">
+            <img src="${src(p.imagen)}" alt="${esc(p.nombre)}" ${imgFallback} class="w-full h-full object-cover group-hover:scale-105 transition duration-300 ${out ? 'opacity-45 grayscale' : ''}" />
+            <span class="absolute top-3 left-3 text-[11px] font-bold px-2.5 py-1 rounded-full bg-white/95 text-emerald-950">${esc(p.categoria || 'General')}</span>
+            <span class="absolute top-3 right-3 text-xs font-extrabold px-2.5 py-1 rounded-full ${out ? 'bg-rose-600 text-white' : stock <= 5 ? 'bg-amber-500 text-emerald-950' : 'bg-emerald-900 text-white'}">${out ? 'Agotado' : 'Stock: ' + stock}</span>
+          </div>
+          <div class="p-4 flex-1 flex flex-col justify-between gap-4">
+            <div class="space-y-1.5">
+              <div class="flex items-start justify-between gap-2">
+                <h3 class="font-bold text-emerald-950 leading-snug">${esc(p.nombre)}</h3>
+                <span class="font-black text-amber-700 shrink-0">${bs(p.precio)}</span>
+              </div>
+              <p class="text-xs text-slate-500">${esc(p.descripcion || 'Preparación artesanal de la casa.')}</p>
+            </div>
+            <button data-add-id="${esc(p.id)}" ${out ? 'disabled' : ''} class="add-to-cart-btn w-full py-2.5 rounded-xl font-bold text-sm transition ${out ? 'bg-slate-100 text-slate-400 cursor-not-allowed' : 'bg-emerald-900 hover:bg-emerald-800 text-white cursor-pointer'}">${out ? 'Sin stock' : 'Agregar al carrito'}</button>
+          </div>
+        </article>`;
+      }).join('');
+    }
+
+    // ==========================================
+    // 6. CARRITO Y COMPRA (descuento de stock)
+    // ==========================================
+    const findProd = id => state.products.find(p => String(p.id) === String(id));
+
+    function addToCart(id) {
+      const p = findProd(id); if (!p) return;
+      const stock = Number(p.stock) || 0;
+      const item = state.cart.find(i => String(i.productId) === String(id));
+      if ((item?.quantity || 0) + 1 > stock) return showToast(`Solo quedan ${stock} unidades de "${p.nombre}".`, 'error');
+      item ? item.quantity++ : state.cart.push({ productId: p.id, quantity: 1 });
+      renderCart();
+      showToast(`Agregado: ${p.nombre}`, 'success');
+    }
+
+    function changeCartQty(id, delta) {
+      const p = findProd(id), item = state.cart.find(i => String(i.productId) === String(id));
+      if (!p || !item) return;
+      const next = item.quantity + delta;
+      if (next <= 0) state.cart = state.cart.filter(i => i !== item);
+      else if (next > (Number(p.stock) || 0)) return showToast(`Stock máximo alcanzado (${p.stock}).`, 'error');
+      else item.quantity = next;
+      renderCart();
+    }
+
+    function renderCart() {
+      // Quita del carrito productos que ya no existen
+      state.cart = state.cart.filter(i => findProd(i.productId));
+      $('cartCountBadge').textContent = state.cart.reduce((a, i) => a + i.quantity, 0);
+      if (!state.cart.length) {
+        $('cartItemsContainer').innerHTML = '<p class="text-center text-slate-400 text-sm py-10">Tu carrito está vacío.</p>';
+        $('cartTotalText').textContent = bs(0);
+        $('checkoutBtn').disabled = true;
+        return;
+      }
+      let total = 0;
+      $('cartItemsContainer').innerHTML = state.cart.map(i => {
+        const p = findProd(i.productId);
+        total += (Number(p.precio) || 0) * i.quantity;
+        return `
+        <div class="p-3.5 rounded-xl bg-white border border-slate-200 flex items-center justify-between gap-3">
+          <div class="min-w-0">
+            <p class="font-bold text-sm text-emerald-950 truncate">${esc(p.nombre)}</p>
+            <p class="text-xs text-slate-500">${bs(p.precio)} c/u · Disp: ${Number(p.stock) || 0}</p>
+          </div>
+          <div class="flex items-center gap-2 shrink-0">
+            <button data-id="${esc(p.id)}" data-delta="-1" class="cart-qty-btn w-7 h-7 rounded-lg bg-slate-100 hover:bg-slate-200 font-bold cursor-pointer">-</button>
+            <span class="text-sm font-extrabold w-5 text-center">${i.quantity}</span>
+            <button data-id="${esc(p.id)}" data-delta="1" class="cart-qty-btn w-7 h-7 rounded-lg bg-emerald-900 hover:bg-emerald-800 text-white font-bold cursor-pointer">+</button>
+          </div>
+        </div>`;
+      }).join('');
+      $('cartTotalText').textContent = bs(total);
+      $('checkoutBtn').disabled = false;
+    }
+
+    async function handleCheckout() {
+      const nombre = $('custName').value.trim(), telefono = $('custPhone').value.trim(), direccion = $('custAddress').value.trim();
+      if (!nombre || !telefono || !direccion) return showToast('Completa nombre, celular y dirección de entrega.', 'error');
+      if (!$('ageCheck').checked) return showToast('Debes confirmar que eres mayor de 18 años.', 'error');
+
+      const btn = $('checkoutBtn');
+      btn.disabled = true; btn.textContent = 'Procesando...';
+      const descontados = []; // para revertir si algo falla
+
+      try {
+        // 1) Stock real y actualizado desde MockAPI (evita vender lo que otro ya compró)
+        if (state.online) state.products = await api('/productos');
+
+        // 2) Validar TODO el carrito antes de tocar el inventario
+        const lines = state.cart.map(i => {
+          const p = findProd(i.productId);
+          if (!p) throw new Error('Un producto del carrito ya no existe.');
+          if (i.quantity > (Number(p.stock) || 0)) throw new Error(`Stock insuficiente de "${p.nombre}" (quedan ${p.stock}).`);
+          return { p, qty: i.quantity };
+        });
+
+        // 3) Descontar stock
+        let total = 0;
+        for (const { p, qty } of lines) {
+          await updateProduct(p.id, { ...p, stock: (Number(p.stock) || 0) - qty });
+          descontados.push({ p, qty });
+          total += (Number(p.precio) || 0) * qty;
+        }
+
+        // 4) Registrar pedido
+        const order = await createOrder(lines.map(l => ({ nombre: l.p.nombre, quantity: l.qty })), total, { nombre, telefono, direccion });
+        state.cart = [];
+        renderAll(); closeCart(); openTrackerModal();
+        showToast(`Pedido ${order.code} recibido. Stock descontado.`, 'success');
+      } catch (err) {
+        // Revertir lo ya descontado
+        for (const { p, qty } of descontados) {
+          try { await updateProduct(p.id, { ...p, stock: (Number(findProd(p.id)?.stock) || 0) + qty }); } catch (e) { console.warn(e); }
+        }
+        renderAll();
+        showToast(err.message || 'Error al procesar la compra', 'error');
+      } finally {
+        btn.textContent = 'Confirmar compra y descontar stock';
+        btn.disabled = state.cart.length === 0;
+      }
+    }
+
+    // ==========================================
+    // 7. PEDIDOS Y SEGUIMIENTO (sincronizado con MockAPI /pedidos)
+    // ==========================================
+    function saveActiveOrder(o) {
+      state.activeOrder = o;
+      o ? localStorage.setItem(KEYS.ORDER, JSON.stringify(o)) : localStorage.removeItem(KEYS.ORDER);
+      renderOrderTrackerUI();
+    }
+
+    async function createOrder(items, totalBs, cliente) {
+      const t = nowStr();
+      let order = {
+        code: 'PED-' + Math.floor(1000 + Math.random() * 9000),
+        stageIndex: 0, totalBs,
+        itemsCount: items.reduce((a, i) => a + i.quantity, 0),
+        itemsSummary: items.map(i => `${i.quantity}x ${i.nombre}`).join(', '),
+        cliente: cliente.nombre, telefono: cliente.telefono, direccion: cliente.direccion,
+        createdAt: t, updatedAt: t
+      };
+      if (state.online) {
+        try { order = await api('/pedidos', { method: 'POST', body: JSON.stringify(order) }); order.synced = true; }
+        catch (e) { console.warn('No se pudo guardar el pedido en MockAPI', e); }
+      }
+      saveActiveOrder(order);
+      return order;
+    }
+
+    async function advanceOrder(manual = false) {
+      const o = state.activeOrder;
+      if (!o || o.stageIndex >= ORDER_STAGES.length - 1) return;
+      const next = { ...o, stageIndex: o.stageIndex + 1, updatedAt: nowStr() };
+      if (o.synced) { try { await api(`/pedidos/${o.id}`, { method: 'PUT', body: JSON.stringify(next) }); } catch (e) { console.warn(e); } }
+      saveActiveOrder(next);
+      if (manual) showToast(`Estado: ${ORDER_STAGES[next.stageIndex].label}`, 'success');
+    }
+
+    // Cada 7s: si el pedido está en MockAPI se consulta el estado real (lo cambia el admin);
+    // si no hay conexión, se simula el avance localmente.
+    setInterval(async () => {
+      const o = state.activeOrder;
+      if (!o || o.stageIndex >= ORDER_STAGES.length - 1) return;
+      if (o.synced && state.online) {
+        try {
+          const remote = await api(`/pedidos/${o.id}`);
+          if (Number(remote.stageIndex) !== o.stageIndex) saveActiveOrder({ ...o, stageIndex: Number(remote.stageIndex), updatedAt: remote.updatedAt || nowStr() });
+        } catch (e) { console.warn(e); }
+      } else advanceOrder(false);
+    }, 7000);
+
+    function renderOrderTrackerUI() {
+      const o = state.activeOrder;
+      const dot = $('trackerDot'), preview = $('miniOrderPreview'), content = $('trackerContent');
+      if (!o) {
+        dot.className = 'w-2 h-2 rounded-full bg-slate-400';
+        preview.textContent = 'Aún no realizaste un pedido.';
+        $('trackerOrderCode').textContent = 'Sin pedido activo';
+        content.innerHTML = `<div class="text-center py-6 space-y-3"><p class="text-emerald-950 font-bold">No tienes ningún pedido en curso.</p>
+          <p class="text-xs text-slate-500">Confirma una compra para ver el seguimiento.</p>
+          <button id="trackerGoCatalogBtn" class="px-4 py-2 rounded-xl bg-amber-500 text-emerald-950 font-extrabold text-sm cursor-pointer">Ir al catálogo</button></div>`;
+        return;
+      }
+      const st = ORDER_STAGES[o.stageIndex], pct = Math.round(((o.stageIndex + 1) / ORDER_STAGES.length) * 100);
+      dot.className = `w-2 h-2 rounded-full animate-pulse ${o.stageIndex === 2 ? 'bg-emerald-600' : 'bg-amber-500'}`;
+      preview.innerHTML = `<div class="flex justify-between text-emerald-950 font-bold mb-1"><span>${esc(o.code)}</span><span class="${o.stageIndex === 2 ? 'text-emerald-700' : 'text-amber-700'}">${st.label}</span></div>
+        <p class="text-[11px] text-slate-600 truncate">${esc(o.itemsSummary)}</p><p class="text-[11px] text-slate-400 mt-1">Actualizado: ${esc(o.updatedAt)}</p>`;
+      $('trackerOrderCode').textContent = `Código ${o.code} · Actualizado: ${o.updatedAt}`;
+
+      const wa = waUrl(`Hola! Mi pedido ${o.code} (${st.label}).\nCliente: ${o.cliente || ''}\nDetalle: ${o.itemsSummary}\nTotal: ${bs(o.totalBs)}\nDirección: ${o.direccion || ''}`);
+      content.innerHTML = `
+        <div class="space-y-2">
+          <div class="flex justify-between text-xs font-bold"><span class="text-slate-600">Estado: <span class="text-emerald-900">${st.label}</span></span><span class="text-amber-700">${pct}%</span></div>
+          <div class="w-full h-2.5 rounded-full bg-slate-200 overflow-hidden"><div class="h-full bg-gradient-to-r from-amber-500 to-emerald-800 transition-all duration-500" style="width:${pct}%"></div></div>
+          <p class="text-xs text-slate-500">${st.desc}</p>
+        </div>
+        <div class="space-y-3">${ORDER_STAGES.map((s, i) => {
+          const done = i < o.stageIndex, active = i === o.stageIndex;
+          return `<div class="flex items-start gap-3 p-3 rounded-xl border ${active ? 'bg-amber-50 border-amber-400' : done ? 'bg-emerald-50 border-emerald-300' : 'bg-stone-50 border-slate-200 opacity-60'}">
+            <div class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-black shrink-0 ${active ? 'bg-amber-500 text-emerald-950' : done ? 'bg-emerald-800 text-white' : 'bg-slate-200 text-slate-500'}">${done ? '✓' : i + 1}</div>
+            <div><p class="text-sm font-bold text-emerald-950">${s.label}</p><p class="text-xs text-slate-600">${s.desc}</p></div></div>`;
+        }).join('')}</div>
+        <div class="p-3.5 rounded-xl bg-stone-50 border border-slate-200 text-xs text-slate-700">
+          Total (${o.itemsCount} unid.): <strong class="text-emerald-950">${bs(o.totalBs)}</strong>
+          <p class="text-slate-400 mt-1">${o.synced ? 'El estado lo actualiza la tienda y se refresca solo cada 7s.' : 'Modo sin conexión: avance simulado.'}</p>
+        </div>
+        <div class="flex flex-wrap gap-2.5">
+          ${o.stageIndex < 2 && !o.synced ? '<button id="advanceStageBtn" class="flex-1 py-2.5 px-4 rounded-xl bg-amber-500 text-emerald-950 font-bold text-sm cursor-pointer">Avanzar estado</button>' : ''}
+          ${o.stageIndex === 2 ? '<button id="resetOrderBtn" class="flex-1 py-2.5 px-4 rounded-xl bg-slate-100 text-slate-800 font-bold text-sm border border-slate-300 cursor-pointer">Limpiar pedido</button>' : ''}
+          <a href="${esc(wa)}" target="_blank" rel="noopener noreferrer" class="flex-1 py-2.5 px-4 rounded-xl bg-emerald-900 hover:bg-emerald-800 text-white font-bold text-sm text-center">Enviar pedido por WhatsApp</a>
+        </div>`;
+    }
+
+    // ==========================================
+    // 8. ADMIN
+    // ==========================================
+    function openAdminModal() { $('adminModal').classList.replace('hidden', 'flex'); syncAdminView(); }
+    function closeAdminModal() { $('adminModal').classList.replace('flex', 'hidden'); }
+
+    function syncAdminView() {
+      $('adminLoginView').classList.toggle('hidden', state.isAdmin);
+      $('adminDashboardView').classList.toggle('hidden', !state.isAdmin);
+      $('adminSessionTag').classList.toggle('hidden', !state.isAdmin);
+      if (state.isAdmin) { renderAdminCategorySelect(); renderAdminProductsTable(); renderAdminCategoriesList(); loadAdminOrders(); }
+    }
+
+    function renderAdminCategorySelect() {
+      const sel = $('prodCategoria'), cur = sel.value;
+      sel.innerHTML = state.categories.map(c => `<option value="${esc(c.nombre)}">${esc(c.nombre)}</option>`).join('');
+      if (cur) sel.value = cur;
+    }
+
+    function renderAdminProductsTable() {
+      $('adminProductsTableBody').innerHTML = state.products.map(p => `
+        <tr class="hover:bg-stone-50">
+          <td class="py-2.5 px-3 font-semibold text-emerald-950">${esc(p.nombre)}</td>
+          <td class="py-2.5 px-3 text-slate-500 text-xs">${esc(p.categoria || '-')}</td>
+          <td class="py-2.5 px-3 text-amber-700 font-bold">${bs(p.precio)}</td>
+          <td class="py-2.5 px-3 font-extrabold ${Number(p.stock) <= 0 ? 'text-rose-600' : 'text-emerald-800'}">${Number(p.stock) || 0}</td>
+          <td class="py-2.5 px-3 text-right whitespace-nowrap space-x-1.5">
+            <button data-edit-id="${esc(p.id)}" class="edit-prod-btn px-2.5 py-1 rounded-lg bg-amber-100 hover:bg-amber-200 text-xs text-amber-900 font-bold cursor-pointer">Editar</button>
+            <button data-del-id="${esc(p.id)}" class="del-prod-btn px-2.5 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-xs text-rose-700 font-bold cursor-pointer">Borrar</button>
+          </td></tr>`).join('');
+    }
+
+    function startEditProduct(id) {
+      const p = findProd(id); if (!p) return;
+      $('editProductId').value = p.id;
+      $('prodNombre').value = p.nombre || '';
+      $('prodCategoria').value = p.categoria || '';
+      $('prodPrecio').value = p.precio ?? 0;
+      $('prodStock').value = p.stock ?? 0;
+      $('prodImagen').value = p.imagen || '';
+      $('prodDescripcion').value = p.descripcion || '';
+      $('productFormTitle').textContent = 'Editar Producto';
+      $('saveProductBtn').textContent = 'Actualizar producto';
+      $('cancelEditProductBtn').classList.remove('hidden');
+    }
+
+    function resetProductForm() {
+      $('productForm').reset();
+      $('editProductId').value = '';
+      $('productFormTitle').textContent = 'Nuevo Producto';
+      $('saveProductBtn').textContent = 'Guardar producto';
+      $('cancelEditProductBtn').classList.add('hidden');
+    }
+
+    function renderAdminCategoriesList() {
+      $('adminCategoriesList').innerHTML = state.categories.map(c => `
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-200 text-xs">
+          <span class="font-bold text-emerald-950">${esc(c.nombre)}</span>${c.descripcion ? `<span class="text-slate-600">· ${esc(c.descripcion)}</span>` : ''}
+          <button data-cat-id="${esc(c.id)}" class="del-cat-btn text-rose-600 hover:text-rose-800 font-bold ml-1 cursor-pointer" title="Eliminar">✕</button>
+        </div>`).join('');
+    }
+
+    async function loadAdminOrders() {
+      const body = $('adminOrdersBody');
+      if (!state.online) { body.innerHTML = '<tr><td colspan="6" class="py-4 px-3 text-xs text-slate-500">Conecta MockAPI (recurso "pedidos") para ver los pedidos.</td></tr>'; return; }
+      try {
+        const orders = (await api('/pedidos')).reverse();
+        body.innerHTML = orders.length ? orders.map(o => `
+          <tr>
+            <td class="py-2.5 px-3 font-bold text-emerald-950">${esc(o.code)}</td>
+            <td class="py-2.5 px-3 text-xs">${esc(o.cliente)}<br><a class="text-emerald-700 underline" target="_blank" href="https://wa.me/591${esc(String(o.telefono).replace(/\D/g, ''))}">${esc(o.telefono)}</a><br><span class="text-slate-500">${esc(o.direccion)}</span></td>
+            <td class="py-2.5 px-3 text-xs text-slate-600">${esc(o.itemsSummary)}</td>
+            <td class="py-2.5 px-3 font-bold text-amber-700">${bs(o.totalBs)}</td>
+            <td class="py-2.5 px-3 text-xs font-bold">${ORDER_STAGES[Number(o.stageIndex)]?.label || '-'}</td>
+            <td class="py-2.5 px-3 text-right">${Number(o.stageIndex) < 2 ? `<button data-order-id="${esc(o.id)}" data-stage="${Number(o.stageIndex)}" class="adv-order-btn px-2.5 py-1 rounded-lg bg-amber-100 hover:bg-amber-200 text-xs text-amber-900 font-bold cursor-pointer">Avanzar</button>` : '✓'}</td>
+          </tr>`).join('') : '<tr><td colspan="6" class="py-4 px-3 text-xs text-slate-500">Aún no hay pedidos.</td></tr>';
+      } catch (e) { body.innerHTML = '<tr><td colspan="6" class="py-4 px-3 text-xs text-rose-600">No se pudo leer /pedidos. ¿Creaste el recurso "pedidos" en MockAPI?</td></tr>'; }
+    }
+
+    // ==========================================
+    // 9. EVENTOS
+    // ==========================================
+    function openCart() { $('cartBackdrop').classList.remove('hidden'); $('cartDrawer').classList.remove('translate-x-full'); }
+    function closeCart() { $('cartBackdrop').classList.add('hidden'); $('cartDrawer').classList.add('translate-x-full'); }
+    function openTrackerModal() { renderOrderTrackerUI(); $('trackerModal').classList.replace('hidden', 'flex'); }
+    function closeTrackerModal() { $('trackerModal').classList.replace('flex', 'hidden'); }
+
+    $('openCartBtn').onclick = openCart;
+    $('closeCartBtn').onclick = closeCart;
+    $('cartBackdrop').onclick = closeCart;
+    $('checkoutBtn').onclick = handleCheckout;
+    $('openTrackerBtn').onclick = openTrackerModal;
+    $('heroTrackerBtn').onclick = openTrackerModal;
+    $('closeTrackerBtn').onclick = closeTrackerModal;
+    $('openAdminBtn').onclick = openAdminModal;
+    $('closeAdminBtn').onclick = closeAdminModal;
+    $('nextPromoBtn').onclick = () => goPromo(state.promoIndex + 1);
+    $('prevPromoBtn').onclick = () => goPromo(state.promoIndex - 1);
+    $('refreshOrdersBtn').onclick = loadAdminOrders;
+
+    // Delegación de eventos (funciona aunque el HTML se vuelva a dibujar)
+    $('categoryFilters').addEventListener('click', e => {
+      const b = e.target.closest('.cat-filter-btn'); if (!b) return;
+      state.selectedCategory = b.dataset.category; renderCategoryFilters(); renderProductsGrid();
+    });
+    $('productsGrid').addEventListener('click', e => { const b = e.target.closest('.add-to-cart-btn'); if (b && !b.disabled) addToCart(b.dataset.addId); });
+    $('cartItemsContainer').addEventListener('click', e => { const b = e.target.closest('.cart-qty-btn'); if (b) changeCartQty(b.dataset.id, Number(b.dataset.delta)); });
+    $('trackerContent').addEventListener('click', e => {
+      if (e.target.closest('#advanceStageBtn')) advanceOrder(true);
+      if (e.target.closest('#resetOrderBtn')) { saveActiveOrder(null); showToast('Seguimiento reiniciado.'); }
+      if (e.target.closest('#trackerGoCatalogBtn')) { closeTrackerModal(); $('catalogo').scrollIntoView({ behavior: 'smooth' }); }
+    });
+    $('adminProductsTableBody').addEventListener('click', async e => {
+      const ed = e.target.closest('.edit-prod-btn'), del = e.target.closest('.del-prod-btn');
+      if (ed) startEditProduct(ed.dataset.editId);
+      if (del && confirm('¿Eliminar este producto?')) {
+        try { await deleteProduct(del.dataset.delId); renderAll(); showToast('Producto eliminado.', 'success'); } catch (err) { showToast(err.message, 'error'); }
+      }
+    });
+    $('adminCategoriesList').addEventListener('click', async e => {
+      const b = e.target.closest('.del-cat-btn'); if (!b) return;
+      try { await removeCategory(b.dataset.catId); renderAll(); showToast('Categoría eliminada.', 'success'); } catch (err) { showToast(err.message, 'error'); }
+    });
+    $('adminOrdersBody').addEventListener('click', async e => {
+      const b = e.target.closest('.adv-order-btn'); if (!b) return;
+      try {
+        const cur = await api(`/pedidos/${b.dataset.orderId}`);
+        await api(`/pedidos/${b.dataset.orderId}`, { method: 'PUT', body: JSON.stringify({ ...cur, stageIndex: Number(cur.stageIndex) + 1, updatedAt: nowStr() }) });
+        loadAdminOrders(); showToast('Estado del pedido actualizado.', 'success');
+      } catch (err) { showToast(err.message, 'error'); }
+    });
+
+    $('searchInput').addEventListener('input', e => { state.searchQuery = e.target.value; renderProductsGrid(); });
+    $('resetFiltersBtn').onclick = () => { state.selectedCategory = 'Todos'; state.searchQuery = ''; $('searchInput').value = ''; renderCategoryFilters(); renderProductsGrid(); };
+
+    $('adminLoginForm').addEventListener('submit', e => {
+      e.preventDefault();
+      if ($('adminUserInput').value.trim() === ADMIN_CREDENTIALS.username && $('adminPassInput').value === ADMIN_CREDENTIALS.password) {
+        state.isAdmin = true; sessionStorage.setItem(KEYS.ADMIN, 'true');
+        $('loginErrorMsg').classList.add('hidden'); syncAdminView(); showToast('Bienvenido al panel admin.', 'success');
+      } else $('loginErrorMsg').classList.remove('hidden');
+    });
+    $('logoutAdminBtn').onclick = () => { state.isAdmin = false; sessionStorage.removeItem(KEYS.ADMIN); syncAdminView(); };
+    $('cancelEditProductBtn').onclick = resetProductForm;
+
+    $('productForm').addEventListener('submit', async e => {
+      e.preventDefault();
+      const editId = $('editProductId').value;
+      const payload = {
+        nombre: $('prodNombre').value.trim(),
+        categoria: $('prodCategoria').value,
+        precio: Number($('prodPrecio').value) || 0,
+        stock: Math.max(0, parseInt($('prodStock').value, 10) || 0),
+        imagen: $('prodImagen').value.trim() || FALLBACK_IMAGE,
+        descripcion: $('prodDescripcion').value.trim()
+      };
+      try {
+        if (editId) { await updateProduct(editId, payload); showToast('Producto actualizado.', 'success'); }
+        else { await createProduct(payload); showToast('Producto creado.', 'success'); }
+        resetProductForm(); renderAll();
+      } catch (err) { showToast(err.message, 'error'); }
+    });
+
+    $('categoryForm').addEventListener('submit', async e => {
+      e.preventDefault();
+      const nombre = $('catNombreInput').value.trim(); if (!nombre) return;
+      try { await createCategory({ nombre, descripcion: $('catDescInput').value.trim() }); $('categoryForm').reset(); renderAll(); showToast('Categoría agregada.', 'success'); }
+      catch (err) { showToast(err.message, 'error'); }
+    });
+
+    // ==========================================
+    // 10. ARRANQUE
+    // ==========================================
+    $('whatsappNavLink').href = waUrl('Hola! Quisiera hacer un pedido o consultar sobre los machucados de Machucado Rami.');
+    buildPromoCarousel();
+    let promoTimer = setInterval(() => goPromo(state.promoIndex + 1), 5000);
+    $('promoCarousel').addEventListener('mouseenter', () => clearInterval(promoTimer));
+    $('promoCarousel').addEventListener('mouseleave', () => { clearInterval(promoTimer); promoTimer = setInterval(() => goPromo(state.promoIndex + 1), 5000); });
+    loadAllData();
+  </script>
+</body>
+</html>
